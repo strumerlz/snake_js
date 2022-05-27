@@ -1,3 +1,4 @@
+{
 const canvas = document.getElementById('square');
 const ctx = canvas.getContext('2d');
 const height = canvas.height;
@@ -42,3 +43,4 @@ square1.stroke();
 square1.stroke();
 [square1.x, square1.y] = [180, 40];
 square1.stroke();
+}
