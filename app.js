@@ -1,4 +1,4 @@
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('snake');
 const ctx = canvas.getContext('2d');
 const height = canvas.height; 
 ctx.lineWidth = 2;
