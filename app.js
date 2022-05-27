@@ -1,8 +1,8 @@
 
 const canvas = document.getElementById('snake');
 const ctx = canvas.getContext('2d');
-const cellSize = canvas.height/20;
-const lineWidth = 2;
+const lineWidth = 4;
+const cellSize = canvas.height/20-lineWidth;
 
 let square = {
   context: ctx,
@@ -30,9 +30,9 @@ let square = {
 
 let snake = {
   body: [[260, 200],
-         [280, 200],
-         [300, 200],
-         [320, 200]],
+         [260+cellSize, 200],
+         [260+cellSize*2, 200],
+         [260+cellSize*3, 200]],
   render(sqr){
     for (let partLocation of this.body){
       [sqr.x, sqr.y]=partLocation;
