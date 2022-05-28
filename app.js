@@ -1,17 +1,20 @@
 
 const canvas = document.getElementById('snake');
 const ctx = canvas.getContext('2d');
-const lineWidth = 4;
-const cellSize = canvas.height/20-lineWidth;
+const cellSize = canvas.height/20;
 
 let cellDraw = {
   context: ctx,
   x: 0,
   y: 0,
-  size: cellSize,
+  cellSize: canvas.height/20,
+  lineWidth: 4,
+  get size(){
+     return this.cellSize-this.lineWidth;
+  },
   strokeStyle : 'DarkSlateGray',
   fillStyle: 'DarkSeaGreen',
-  lineWidth: lineWidth,
+  
 
   stroke() {
     this.context.strokeStyle = this.strokeStyle;
