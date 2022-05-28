@@ -65,28 +65,16 @@
       // eslint-disable-next-line default-case
       switch (event.key) {
         case 'ArrowLeft':
-          this.direction = {
-            x: -1,
-            y: 0
-          };
+          [this.direction.x, this.direction.y] = [-1,0];
           break;
         case 'ArrowRight':
-          this.direction = {
-            x: 1,
-            y: 0
-          };
+          [this.direction.x, this.direction.y] = [1,0];
           break;
         case 'ArrowUp':
-          this.direction = {
-            x: 0,
-            y: -1
-          };
+          [this.direction.x, this.direction.y] = [0,-1];
           break;
         case 'ArrowDown':
-          this.direction = {
-            x: 0,
-            y: 1
-          };
+          [this.direction.x, this.direction.y] = [0,1];
           break;
       }
     },
