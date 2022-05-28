@@ -1,25 +1,27 @@
 
 const canvas = document.getElementById('snake');
 const ctx = canvas.getContext('2d');
-const cellSize = canvas.height/20;
 
 let cellDraw = {
   context: ctx,
   x: 0,
   y: 0,
+  cellSize: canvas.height/20,
   lineWidth: 4,
-  size: cellSize-this.lineWidth,
-  strokeStyle : 'darkSlateGray',
-  fillStyle: 'darkSeaGreen',
+  get strokeSize(){
+     return this.cellSize-this.lineWidth;
+  },
+  strokeStyle : 'DarkSlateGray',
+  fillStyle: 'DarkSeaGreen',
   
   stroke() {
     this.context.strokeStyle = this.strokeStyle;
     this.context.lineWidth = this.lineWidth;
-    this.context.strokeRect(this.x, this.y, this.size, this.size);
+    this.context.strokeRect(this.x, this.y, this.strokeSize, this.strokeSize);
   },
   fill() {
     this.context.fillStyle = this.fillStyle;
-    this.context.fillRect(this.x, this.y, this.size, this.size);
+    this.context.fillRect(this.x, this.y, this.strokeSize, this.strokeSize);
   },
   render() {
       this.fill();
@@ -34,13 +36,17 @@ let cellDraw = {
 let snake = {
   cell: cellSnake,
   head: [320, 200],
-  tail: [[320-this.cell.size, 200],
-         [320-this.cell.size*2, 200],
-         [320-this.cell.size*3, 200]],
-  direction: { x: 1, y: 0},
+  tail: [],
+  direction: {x: 1, y: 0},
+  init(){
+    for (let i=1; i<4; i++){
+      let arr = [this.head[0]-this.cell.cellSize*i, this.head[1] ];
+      this.tail.push(arr);
+    }
+  },
   headStepCalc() {
-    let dx = this.cell.size * this.direction.x;
-    let dy = this.cell.size * this.direction.y;
+    let dx = this.cell.cellSize * this.direction.x;
+    let dy = this.cell.cellSize * this.direction.y;
     this.head[0] += dx;
     this.cell[1] += dy;
   },
@@ -82,6 +88,9 @@ let snake = {
     };
   },  
 }
+
+snake.init();
+snake.render();
 
 //console.log([snake.head, ...snake.tail]);
 //snake.move();
