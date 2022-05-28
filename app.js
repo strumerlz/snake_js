@@ -30,7 +30,11 @@ let cellDraw = {
 let cellSnake = Object.create(cellDraw);
 let cellFood = Object.create(cellDraw);
 cellFood.strokeStyle = 'maroon';
-cellFood.fillStyle = 'chocolate';
+cellFood.fillStyle = 'saddleBrown';
+let cellCollision = Object.create(cellDraw);
+cellCollision.strokeStyle = 'maroon';
+cellCollision.fillStyle = 'brown';
+
 
 let snake = {
   cell: cellSnake,
@@ -41,7 +45,7 @@ let snake = {
     y: 0
   },
   init() {
-    for (let i = 1; i < 8; i++) {
+    for (let i = 1; i < 15; i++) {
       let arr = [this.head[0] - this.cell.cellSize * i, this.head[1]];
       this.tail.push(arr);
     }
@@ -98,6 +102,7 @@ let snake = {
     };
   },
 }
+
 const game = {
   speed: 8,
   init() {
@@ -111,10 +116,10 @@ const game = {
       let timeOut = 1000 / this.speed;
       this.timerId = setTimeout(() => {
         snake.move();
-        this.checkColisions();
         this.checkBoundaries();
         clearCanvas();
         snake.render();
+        this.checkColisions();
         this.play();
       }, timeOut);
     };
@@ -154,7 +159,7 @@ const game = {
           snake.head[0] = 0;
           break;
         default:
-      };
+      }
     } else {
       switch (snake.head[1]) {
         case topBorder:
@@ -164,16 +169,18 @@ const game = {
           snake.head[1] = 0;
           break;
         default:
-      };
-    };
+      }
+    }
   },
   checkColisions() {
     for (let i = 0; i < snake.tail.length; i++) {
       if (snake.head[0] === snake.tail[i][0] && snake.head[1] === snake.tail[i][1]) {
-
+        [cellCollision.x, cellCollision.y] = snake.head;
+        console.log([cellCollision.x, cellCollision.y]);
+        cellCollision.render();
         game.over();
         return;
-      };
+      }
     }
   },
   over() {
