@@ -27,24 +27,20 @@
     },
   }
 
-
-
- 
-
   let square1 = Object.create(square);
 
   square1.size = height / 20 - 2;
   square1.strokeStyle = 'green';
   square1.lineWidth = 2;
   square1.context = ctx;
-  
 
- let mover = {
+
+  let mover = {
     direction: {
       x: 1,
       y: 0,
     },
-    speed: 6,
+    speed: 1,
     stepCalc(obj) {
 
       let dx = obj.size * this.direction.x;
@@ -55,22 +51,64 @@
     },
 
     on(obj) {
-      let timeOut = 1000/this.speed;
+      let timeOut = 1000 / this.speed;
+      this.stepCalc(obj);
+      console.log(`direction.x is ${this.direction.x}`);
       setTimeout(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        this.stepCalc(obj);
         obj.render();
         this.on(obj);
       }, timeOut)
     },
+
+    changeDirection(event) {
+      // eslint-disable-next-line default-case
+      switch (event.key) {
+        case 'ArrowLeft':
+          this.direction = {
+            x: -1,
+            y: 0
+          };
+          console.log(`ArrowLeft key was pressed, direction.x set ${this.direction.x}`);
+          break;
+        case 'ArrowRight':
+          this.direction = {
+            x: 1,
+            y: 0
+          };
+          console.log(`ArrowRight key was pressed, direction.x set ${this.direction.x}`);
+          break;
+        case 'ArrowUp':
+          this.direction = {
+            x: 0,
+            y: -1
+          };
+          console.log(`ArrowUp key was pressed, direction.x set ${this.direction.x}`);
+          break;
+        case 'ArrowDown':
+          this.direction = {
+            x: 0,
+            y: 1
+          };
+          console.log(`ArrowDown key was pressed, direction.x set ${this.direction.x}`);
+          break;
+      }
+    }
   };
 
   [square1.x, square1.y] = [60, 60];
 
   square1.render();
- mover.on(square1);
+  mover.on(square1);
+  mover.direction.x = -1;
 
-  
+  document.addEventListener('keydown', mover.changeDirection);
+
+  let event = new Event('keydown', {
+    bubbles: true,
+    key: 'ArrowUp'
+  });
+  //setTimeout(canvas.dispatchEvent(event),2000);
 
 
   //window.requestAnimationFrame(move.on.call(move));
@@ -78,3 +116,4 @@
 
 
 }
+``
