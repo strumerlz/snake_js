@@ -41,7 +41,7 @@ let snake = {
     y: 0
   },
   init() {
-    for (let i = 1; i < 4; i++) {
+    for (let i = 1; i < 8; i++) {
       let arr = [this.head[0] - this.cell.cellSize * i, this.head[1]];
       this.tail.push(arr);
     }
@@ -107,35 +107,37 @@ const game = {
     this.pauseListener();
   },
   play() {
-    let timeOut = 1000 / this.speed;
-    this.timerId = setTimeout(() => {
-      clearCanvas();
-      snake.move();
-      this.checkBoundaries();
-      snake.render();
-      this.play();
-    }, timeOut);
+    if (this.busted === false || this.busted === undefined) {
+      let timeOut = 1000 / this.speed;
+      this.timerId = setTimeout(() => {
+        snake.move();
+        this.checkColisions();
+        this.checkBoundaries();
+        clearCanvas();
+        snake.render();
+        this.play();
+      }, timeOut);
+    };
   },
   pause() {
     clearTimeout(this.timerId);
   },
-  pausePlaySwitch(event){
-    if(event.code == 'Space'){
-      
-    if(this.paused == false){
-      this.paused = true;
-      this.pause(); 
-      console.log('Pause');   
-    } else {      
-      this.paused = false;  
-      this.play();
-      console.log('Play');
+  pausePlaySwitch(event) {
+    if (event.code === 'Space' && (this.busted === false || this.busted === undefined)) {
+      if (this.paused === true || this.paused === undefined) {
+        this.paused = false;
+        this.play();
+        console.log('Play');
+      } else {
+        this.paused = true;
+        this.pause();
+        console.log('Pause');
+      };
     };
-  };
   },
-  pauseListener(){
+  pauseListener() {
     let that = this;
-    document.addEventListener('keydown', (event)=>that.pausePlaySwitch(event));
+    document.addEventListener('keydown', (event) => that.pausePlaySwitch(event));
   },
   checkBoundaries() {
     let leftBorder = 0 - cellSnake.cellSize;
@@ -164,6 +166,20 @@ const game = {
         default:
       };
     };
+  },
+  checkColisions() {
+    for (let i = 0; i < snake.tail.length; i++) {
+      if (snake.head[0] === snake.tail[i][0] && snake.head[1] === snake.tail[i][1]) {
+
+        game.over();
+        return;
+      };
+    }
+  },
+  over() {
+    clearTimeout(this.timerId);
+    this.busted = true;
+    console.log('GAME OVER')
   }
 }
 
