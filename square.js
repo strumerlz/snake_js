@@ -69,28 +69,24 @@
             x: -1,
             y: 0
           };
-          console.log(`ArrowLeft key was pressed, direction.x set ${this.direction.x}`);
           break;
         case 'ArrowRight':
           this.direction = {
             x: 1,
             y: 0
           };
-          console.log(`ArrowRight key was pressed, direction.x set ${this.direction.x}`);
           break;
         case 'ArrowUp':
           this.direction = {
             x: 0,
             y: -1
           };
-          console.log(`ArrowUp key was pressed, direction.x set ${this.direction.x}`);
           break;
         case 'ArrowDown':
           this.direction = {
             x: 0,
             y: 1
           };
-          console.log(`ArrowDown key was pressed, direction.x set ${this.direction.x}`);
           break;
       }
     },
