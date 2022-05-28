@@ -29,15 +29,15 @@ let square = {
 }
 
 let snake = {
-  body: [[260, 200],
-         [260+cellSize, 200],
-         [260+cellSize*2, 200],
-         [260+cellSize*3, 200]],
+  head: [320, 200],
+  tail: [[320-cellSize, 200],
+         [320-cellSize*2, 200],
+         [320-cellSize*3, 200]],
   render(sqr){
-    for (let partLocation of this.body){
+    for (let partLocation of [this.head,...this.tail]){
       [sqr.x, sqr.y]=partLocation;
       sqr.render();
-    }
+    };
   },  
 }
 
