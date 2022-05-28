@@ -49,9 +49,9 @@
 
     on(obj) {
       let timeOut = 1000 / this.speed;
-      this.stepCalc(obj);
       setTimeout(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.stepCalc(obj);
         obj.render();
         this.on(obj);
       }, timeOut);
@@ -66,9 +66,9 @@
           case 'ArrowRight':
             [this.direction.x, this.direction.y] = [1, 0];
             break;
-            default:
+          default:
         };
-      } else {        
+      } else {
         switch (event.key) {
           case 'ArrowUp':
             [this.direction.x, this.direction.y] = [0, -1];
@@ -76,7 +76,7 @@
           case 'ArrowDown':
             [this.direction.x, this.direction.y] = [0, 1];
             break;
-            default:
+          default:
         };
       };
     },
