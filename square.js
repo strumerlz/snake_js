@@ -54,25 +54,31 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         obj.render();
         this.on(obj);
-      }, timeOut)
+      }, timeOut);
     },
 
     changeDirection(event) {
-      // eslint-disable-next-line default-case
-      switch (event.key) {
-        case 'ArrowLeft':
-          [this.direction.x, this.direction.y] = [-1, 0];
-          break;
-        case 'ArrowRight':
-          [this.direction.x, this.direction.y] = [1, 0];
-          break;
-        case 'ArrowUp':
-          [this.direction.x, this.direction.y] = [0, -1];
-          break;
-        case 'ArrowDown':
-          [this.direction.x, this.direction.y] = [0, 1];
-          break;
-      }
+      if (this.direction.x === 0) {
+        switch (event.key) {
+          case 'ArrowLeft':
+            [this.direction.x, this.direction.y] = [-1, 0];
+            break;
+          case 'ArrowRight':
+            [this.direction.x, this.direction.y] = [1, 0];
+            break;
+            default:
+        };
+      } else {        
+        switch (event.key) {
+          case 'ArrowUp':
+            [this.direction.x, this.direction.y] = [0, -1];
+            break;
+          case 'ArrowDown':
+            [this.direction.x, this.direction.y] = [0, 1];
+            break;
+            default:
+        };
+      };
     },
     directionListener() {
       let that = this;
