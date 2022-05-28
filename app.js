@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 const lineWidth = 4;
 const cellSize = canvas.height/20-lineWidth;
 
-let square = {
+let cellDraw = {
   context: ctx,
   x: 0,
   y: 0,
@@ -33,12 +33,12 @@ let snake = {
   tail: [[320-cellSize, 200],
          [320-cellSize*2, 200],
          [320-cellSize*3, 200]],
-  render(sqr){
+  render(cell){
     for (let partLocation of [this.head,...this.tail]){
-      [sqr.x, sqr.y]=partLocation;
-      sqr.render();
+      [cell.x, cell.y]=partLocation;
+      cell.render();
     };
   },  
 }
 
-snake.render(square);
+snake.render(cellDraw);
