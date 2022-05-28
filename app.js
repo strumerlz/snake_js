@@ -63,9 +63,11 @@ let snake = {
       switch (event.key) {
         case 'ArrowLeft':
           [this.direction.x, this.direction.y] = [-1, 0];
+          console.log('left');
           break;
         case 'ArrowRight':
           [this.direction.x, this.direction.y] = [1, 0];
+          console.log('right');
           break;
         default:
       };
@@ -73,9 +75,11 @@ let snake = {
       switch (event.key) {
         case 'ArrowUp':
           [this.direction.x, this.direction.y] = [0, -1];
-          break;
+          console.log('up');
+          break;          
         case 'ArrowDown':
           [this.direction.x, this.direction.y] = [0, 1];
+          console.log('down');
           break;
         default:
       };
@@ -104,6 +108,7 @@ const game = {
   init(){
     snake.init();
     snake.render();
+    snake.directionListener();
   },
   play(){
     let timeOut = 1000 / this.speed;
@@ -120,6 +125,7 @@ function clearCanvas(){
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 game.init();
+game.play();
 
 
 //console.log([snake.head, ...snake.tail]);
