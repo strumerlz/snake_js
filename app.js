@@ -1,4 +1,3 @@
-
 const canvas = document.getElementById('snake');
 const ctx = canvas.getContext('2d');
 
@@ -6,14 +5,14 @@ let cellDraw = {
   context: ctx,
   x: 0,
   y: 0,
-  cellSize: canvas.height/20,
+  cellSize: canvas.height / 20,
   lineWidth: 4,
-  get strokeSize(){
-     return this.cellSize-this.lineWidth;
+  get strokeSize() {
+    return this.cellSize - this.lineWidth;
   },
-  strokeStyle : 'DarkSlateGray',
+  strokeStyle: 'DarkSlateGray',
   fillStyle: 'DarkSeaGreen',
-  
+
   stroke() {
     this.context.strokeStyle = this.strokeStyle;
     this.context.lineWidth = this.lineWidth;
@@ -24,23 +23,26 @@ let cellDraw = {
     this.context.fillRect(this.x, this.y, this.strokeSize, this.strokeSize);
   },
   render() {
-      this.fill();
-      this.stroke();
+    this.fill();
+    this.stroke();
   },
 }
- let cellSnake = Object.create(cellDraw);
- let cellFood = Object.create(cellDraw);
- cellFood.strokeStyle = 'maroon';
- cellFood.fillStyle = 'chocolate';
+let cellSnake = Object.create(cellDraw);
+let cellFood = Object.create(cellDraw);
+cellFood.strokeStyle = 'maroon';
+cellFood.fillStyle = 'chocolate';
 
 let snake = {
   cell: cellSnake,
   head: [320, 200],
   tail: [],
-  direction: {x: 1, y: 0},
-  init(){
-    for (let i=1; i<4; i++){
-      let arr = [this.head[0]-this.cell.cellSize*i, this.head[1] ];
+  direction: {
+    x: 1,
+    y: 0
+  },
+  init() {
+    for (let i = 1; i < 4; i++) {
+      let arr = [this.head[0] - this.cell.cellSize * i, this.head[1]];
       this.tail.push(arr);
     }
   },
@@ -54,9 +56,9 @@ let snake = {
     this.tail.unshift([...this.head]);
     this.tail.pop()
   },
-  move(){
+  move() {
     this.tailStepCalc();
-    this.headStepCalc();        
+    this.headStepCalc();
   },
   changeDirection(event) {
     if (this.direction.x === 0) {
@@ -76,7 +78,7 @@ let snake = {
         case 'ArrowUp':
           [this.direction.x, this.direction.y] = [0, -1];
           console.log('up');
-          break;          
+          break;
         case 'ArrowDown':
           [this.direction.x, this.direction.y] = [0, 1];
           console.log('down');
@@ -89,43 +91,88 @@ let snake = {
     let that = this;
     document.addEventListener('keydown', (event) => that.changeDirection(event));
   },
-  render(){
-    for (let partLocation of [this.head,...this.tail]){
-      [this.cell.x, this.cell.y]=partLocation;
+  render() {
+    for (let partLocation of [this.head, ...this.tail]) {
+      [this.cell.x, this.cell.y] = partLocation;
       this.cell.render();
     };
-  },  
+  },
 }
-
-function start(){
-  snake.init();
-  snake.directionListener();
-  snake.render();
-}
-
 const game = {
   speed: 8,
-  init(){
+  init() {
     snake.init();
     snake.render();
     snake.directionListener();
+    this.pauseListener();
   },
-  play(){
+  play() {
     let timeOut = 1000 / this.speed;
-    setTimeout(() => {
+    this.timerId = setTimeout(() => {
       clearCanvas();
       snake.move();
+      this.checkBoundaries();
       snake.render();
       this.play();
     }, timeOut);
   },
+  pause() {
+    clearTimeout(this.timerId);
+  },
+  pausePlaySwitch(event){
+    if(event.code == 'Space'){
+      
+    if(this.paused == false){
+      this.paused = true;
+      this.pause(); 
+      console.log('Pause');   
+    } else {      
+      this.paused = false;  
+      this.play();
+      console.log('Play');
+    };
+  };
+  },
+  pauseListener(){
+    let that = this;
+    document.addEventListener('keydown', (event)=>that.pausePlaySwitch(event));
+  },
+  checkBoundaries() {
+    let leftBorder = 0 - cellSnake.cellSize;
+    let rightBorder = canvas.width;
+    let topBorder = 0 - cellSnake.cellSize;
+    let bottomBorder = canvas.height;
+
+    if (snake.direction.x !== 0) {
+      switch (snake.head[0]) {
+        case leftBorder:
+          snake.head[0] = rightBorder - cellSnake.cellSize;
+          break;
+        case rightBorder:
+          snake.head[0] = 0;
+          break;
+        default:
+      };
+    } else {
+      switch (snake.head[1]) {
+        case topBorder:
+          snake.head[1] = bottomBorder - cellSnake.cellSize;
+          break;
+        case bottomBorder:
+          snake.head[1] = 0;
+          break;
+        default:
+      };
+    };
+  }
 }
 
-function clearCanvas(){
+function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
 game.init();
-game.play();
+
 
 
 //console.log([snake.head, ...snake.tail]);
