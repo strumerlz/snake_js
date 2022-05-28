@@ -34,7 +34,6 @@
   square1.lineWidth = 2;
   square1.context = ctx;
 
-
   let mover = {
     direction: {
       x: 1,
@@ -42,18 +41,15 @@
     },
     speed: 10,
     stepCalc(obj) {
-
       let dx = obj.size * this.direction.x;
       let dy = obj.size * this.direction.y;
       obj.x += dx;
       obj.y += dy;
-
     },
 
     on(obj) {
       let timeOut = 1000 / this.speed;
       this.stepCalc(obj);
-      console.log(`direction.x is ${this.direction.x}`);
       setTimeout(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         obj.render();
@@ -65,16 +61,16 @@
       // eslint-disable-next-line default-case
       switch (event.key) {
         case 'ArrowLeft':
-          [this.direction.x, this.direction.y] = [-1,0];
+          [this.direction.x, this.direction.y] = [-1, 0];
           break;
         case 'ArrowRight':
-          [this.direction.x, this.direction.y] = [1,0];
+          [this.direction.x, this.direction.y] = [1, 0];
           break;
         case 'ArrowUp':
-          [this.direction.x, this.direction.y] = [0,-1];
+          [this.direction.x, this.direction.y] = [0, -1];
           break;
         case 'ArrowDown':
-          [this.direction.x, this.direction.y] = [0,1];
+          [this.direction.x, this.direction.y] = [0, 1];
           break;
       }
     },
@@ -90,4 +86,3 @@
   square1.render();
   mover.on(square1);
 }
-``
