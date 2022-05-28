@@ -48,15 +48,15 @@ let snake = {
     let dx = this.cell.cellSize * this.direction.x;
     let dy = this.cell.cellSize * this.direction.y;
     this.head[0] += dx;
-    this.cell[1] += dy;
+    this.head[1] += dy;
   },
   tailStepCalc() {
-    this.tail.unshift(this.head);
+    this.tail.unshift([...this.head]);
     this.tail.pop()
   },
   move(){
-    this.headStepCalc();
-    this.tailStepCalc();    
+    this.tailStepCalc();
+    this.headStepCalc();        
   },
   changeDirection(event) {
     if (this.direction.x === 0) {
@@ -81,6 +81,10 @@ let snake = {
       };
     };
   },
+  directionListener() {
+    let that = this;
+    document.addEventListener('keydown', (event) => that.changeDirection(event));
+  },
   render(){
     for (let partLocation of [this.head,...this.tail]){
       [this.cell.x, this.cell.y]=partLocation;
@@ -89,8 +93,34 @@ let snake = {
   },  
 }
 
-snake.init();
-snake.render();
+function start(){
+  snake.init();
+  snake.directionListener();
+  snake.render();
+}
+
+const game = {
+  speed: 8,
+  init(){
+    snake.init();
+    snake.render();
+  },
+  play(){
+    let timeOut = 1000 / this.speed;
+    setTimeout(() => {
+      clearCanvas();
+      snake.move();
+      snake.render();
+      this.play();
+    }, timeOut);
+  },
+}
+
+function clearCanvas(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+game.init();
+
 
 //console.log([snake.head, ...snake.tail]);
 //snake.move();
