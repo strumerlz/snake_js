@@ -40,7 +40,7 @@
       x: 1,
       y: 0,
     },
-    speed: 1,
+    speed: 10,
     stepCalc(obj) {
 
       let dx = obj.size * this.direction.x;
@@ -93,27 +93,17 @@
           console.log(`ArrowDown key was pressed, direction.x set ${this.direction.x}`);
           break;
       }
-    }
+    },
+    directionListener() {
+      let that = this;
+      document.addEventListener('keydown', (event) => that.changeDirection(event));
+    },
   };
 
   [square1.x, square1.y] = [60, 60];
 
+  mover.directionListener();
   square1.render();
   mover.on(square1);
-  mover.direction.x = -1;
-
-  document.addEventListener('keydown', mover.changeDirection);
-
-  let event = new Event('keydown', {
-    bubbles: true,
-    key: 'ArrowUp'
-  });
-  //setTimeout(canvas.dispatchEvent(event),2000);
-
-
-  //window.requestAnimationFrame(move.on.call(move));
-
-
-
 }
 ``
