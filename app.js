@@ -169,7 +169,7 @@ const food = new function() {
 
 const game = {
   speed: 8,
-  score: 1,
+  score: 0,
   init() {
     snake.init();
     this.genFood();
@@ -179,6 +179,8 @@ const game = {
   ifFoodEaten() {
     if (snake.tail[0][0] === food.cell.x && snake.tail[0][1] === food.cell.y) {
       snake.grow();
+      this.score++;
+      infoBar.scoreDisplay();
       this.genFood();
     }
   },
@@ -271,8 +273,11 @@ let infoBar = {
   pauseDisplay() {
     this.state.textContent = `Pause`;
   },
+  clearState(){
+    this.state.textContent = ` `;
+  },
   scoreDisplay() {
-    this.state.textContent = `Score: ${game.score}`;
+    this.score.textContent = `Score: ${game.score}`;
   },
 };
 
