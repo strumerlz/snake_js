@@ -101,37 +101,6 @@ let snake = {
   grow() {
     this.tail.push([...[food.cell.x, food.cell.y]]);
   },
-  changeDirection(event) {
-    if (this.direction.x === 0) {
-      switch (event.key) {
-        case 'ArrowLeft':
-          [this.direction.x, this.direction.y] = [-1, 0];
-          console.log('left');
-          break;
-        case 'ArrowRight':
-          [this.direction.x, this.direction.y] = [1, 0];
-          console.log('right');
-          break;
-        default:
-      };
-    } else {
-      switch (event.key) {
-        case 'ArrowUp':
-          [this.direction.x, this.direction.y] = [0, -1];
-          console.log('up');
-          break;
-        case 'ArrowDown':
-          [this.direction.x, this.direction.y] = [0, 1];
-          console.log('down');
-          break;
-        default:
-      };
-    };
-  },
-  addDirectionListener() {
-    let that = this;
-    document.addEventListener('keydown', (event) => that.changeDirection(event));
-  },
   checkColisions() {
     for (let i = 0; i < this.tail.length; i++) {
       if (this.head[0] === this.tail[i][0] && this.head[1] === this.tail[i][1]) {
@@ -173,15 +142,24 @@ const game = {
   speed: 1,
   score: 0,
   init() {
+    this.reset();
+    this.initListeners();    
+  },
+  reset(){
     this.busted = false;
+    this.paused = true;
+    this.speed = 1;
+    this.score = 0;
+    [snake.direction.x, snake.direction.y] = [1,0]; 
     board.clearCanvas();
     infoBar.initStateDisplay();
     infoBar.clearBottomBar();
-    this.speed = 1;
-    this.score = 0;
     snake.init();
     this.genFood();
-    snake.addDirectionListener();
+    console.log('NEW GAME');
+  },
+  initListeners(){
+    this.addDirectionListener();
     this.pauseListener();
     this.newGameListener();
   },
@@ -207,8 +185,41 @@ const game = {
     } while (this.isFoodCollide());
     food.render();
   },
+  changeDirection(event) {
+    if (!this.busted && !this.paused) {
+      if (snake.direction.x === 0) {
+        switch (event.key) {
+          case 'ArrowLeft':
+            [snake.direction.x, snake.direction.y] = [-1, 0];
+            console.log('left');
+            break;
+          case 'ArrowRight':
+            [snake.direction.x, snake.direction.y] = [1, 0];
+            console.log('right');
+            break;
+          default:
+        };
+      } else {
+        switch (event.key) {
+          case 'ArrowUp':
+            [snake.direction.x, snake.direction.y] = [0, -1];
+            console.log('up');
+            break;
+          case 'ArrowDown':
+            [snake.direction.x, snake.direction.y] = [0, 1];
+            console.log('down');
+            break;
+          default:
+        };
+      };
+    };
+  },
+  addDirectionListener() {
+    let that = this;
+    document.addEventListener('keydown', (event) => that.changeDirection(event));
+  },
   play() {
-    if (this.busted === false || this.busted === undefined) {
+    if (!this.busted) {
       let timeOut = 1000 / (5 + this.speed * 3);
       this.timerId = setTimeout(() => {
         snake.move();
@@ -227,8 +238,8 @@ const game = {
     clearTimeout(this.timerId);
   },
   pausePlaySwitch(event) {
-    if (event.code === 'Space' && (this.busted === false || this.busted === undefined)) {
-      if (this.paused === true || this.paused === undefined) {
+    if (event.code === 'Space' && !this.busted) {
+      if (this.paused) {
         this.paused = false;
         this.play();
         infoBar.clearStateBar();
@@ -286,8 +297,8 @@ const game = {
   },
   newGame(event) {
     if (event.code === 'Enter' && this.busted === true)
-      this.init();
-   // this.play();
+      this.reset();
+    // this.play();
   },
   newGameListener() {
     let that = this;
@@ -307,7 +318,7 @@ let infoBar = {
     this.state.textContent = `Pause`;
   },
   clearStateBar() {
-    this.state.textContent = ` `;
+    this.state.textContent = ``;
   },
   scoreDisplay() {
     this.score.textContent = `${game.score}`;
@@ -319,9 +330,9 @@ let infoBar = {
     this.bottomBar.textContent = `Press Enter to start new game`;
   },
   clearBottomBar() {
-    this.bottomBar.textContent = ``;
+    this.bottomBar.textContent = ``;    
   },
-  initStateDisplay(){
+  initStateDisplay() {
     this.state.textContent = `Press space to start/pause`;
   },
 };
