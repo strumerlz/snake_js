@@ -82,6 +82,7 @@ let snake = {
       let arr = [this.head[0] - board.cellSize * i, this.head[1]];
       this.tail.push(arr);
     }
+    this.render();
   },
   headStepCalc() {
     let dx = board.cellSize * this.direction.x;
@@ -96,6 +97,9 @@ let snake = {
   move() {
     this.tailStepCalc();
     this.headStepCalc();
+  },
+  grow(){
+    this.tail.push([...[food.cell.x, food.cell.y]]);
   },
   changeDirection(event) {
     if (this.direction.x === 0) {
@@ -135,7 +139,6 @@ let snake = {
         console.log([cellCollision.x, cellCollision.y]);
         cellCollision.render();
         game.over();
-        return;
       }
     }
   },
@@ -157,11 +160,12 @@ const food = new function() {
       value: '#BD8E86',
       writable: true
     }
-  });f
+  });
   this.genFoodLocation = function(){
     let location = board.genXY();
     let gridSnappedLoc = location.map((e) => board.snapToGrid(e, board.cellSize));
     [this.cell.x, this.cell.y] = gridSnappedLoc;
+    //сheck snake body collision
   }
   this.render = () => this.cell.render();
   this.init = function(){
@@ -174,18 +178,30 @@ const game = {
   speed: 8,
   init() {
     snake.init();
-    snake.render();
+    food.init();
     snake.directionListener();
     this.pauseListener();
   },
-
+  isFoodDigested(){
+    if (snake.tail[snake.tail.length-1][0] === food.cell.x && snake.tail[snake.tail.length-1][1] === food.cell.y) {
+      snake.grow();
+    }
+  },
+  isFoodEaten(){
+    if (snake.head[0] === food.cell.x && snake.head[1] === food.cell.y) {
+      food.genFoodLocation();
+    }
+  },
   play() {
     if (this.busted === false || this.busted === undefined) {
       let timeOut = 1000 / this.speed;
       this.timerId = setTimeout(() => {
+        this.isFoodDigested();
         snake.move();
         this.checkBoundaries();
+        this.isFoodEaten();
         board.clearCanvas();
+        food.render();
         snake.render();
         snake.checkColisions();
         this.play();
