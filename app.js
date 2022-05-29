@@ -1,3 +1,5 @@
+'use strict';
+
 let board = {
   canvas: document.getElementById('snake'),
   ctx: document.getElementById('snake').getContext('2d'),
@@ -60,9 +62,6 @@ let cellDraw = {
 };
 
 let cellSnake = Object.create(cellDraw);
-//let cellFood = Object.create(cellDraw);
-//cellFood.strokeStyle = '#2f2f4f';
-//cellFood.fillStyle = '#8F8FBC';
 let cellCollision = Object.create(cellDraw);
 cellCollision.strokeStyle = '#4f2f2f';
 cellCollision.fillStyle = '#bc8f8f';
@@ -143,22 +142,24 @@ const game = {
   score: 0,
   init() {
     this.reset();
-    this.initListeners();    
+    this.initListeners();
   },
-  reset(){
+  reset() {
     this.busted = false;
     this.paused = true;
     this.speed = 1;
     this.score = 0;
-    [snake.direction.x, snake.direction.y] = [1,0]; 
+    [snake.direction.x, snake.direction.y] = [1, 0];
     board.clearCanvas();
     infoBar.initStateDisplay();
+    infoBar.scoreDisplay();
+    infoBar.speedDisplay();
     infoBar.clearBottomBar();
     snake.init();
     this.genFood();
     console.log('NEW GAME');
   },
-  initListeners(){
+  initListeners() {
     this.addDirectionListener();
     this.pauseListener();
     this.newGameListener();
@@ -296,13 +297,13 @@ const game = {
     console.log('GAME OVER')
   },
   newGame(event) {
-    if (event.code === 'Enter' && this.busted === true)
+    if (event.key === 'Enter' && this.busted === true) {
       this.reset();
-    // this.play();
+    }
   },
   newGameListener() {
     let that = this;
-    document.addEventListener('keydown', (event) => this.newGame(event));
+    document.addEventListener('keydown', (event) => that.newGame(event));
   },
 }
 
@@ -330,7 +331,7 @@ let infoBar = {
     this.bottomBar.textContent = `Press Enter to start new game`;
   },
   clearBottomBar() {
-    this.bottomBar.textContent = ``;    
+    this.bottomBar.textContent = ``;
   },
   initStateDisplay() {
     this.state.textContent = `Press space to start/pause`;
