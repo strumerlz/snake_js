@@ -1,6 +1,3 @@
-const canvas = document.getElementById('snake');
-const ctx = canvas.getContext('2d');
-
 let board = {
   canvas: document.getElementById('snake'),
   ctx: document.getElementById('snake').getContext('2d'),
@@ -8,7 +5,7 @@ let board = {
     return this.canvas.height / 20;
   },
   get leftBorder() {
-    return 0 - cellSnake.cellSize;
+    return 0 - this.cellSize;
   },
   get rightBorder() {
     return this.canvas.width;
@@ -20,7 +17,7 @@ let board = {
     return this.canvas.height;
   },
   clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   },
   snapToGrid(coordinate, cellSize) {
     let remainder = coordinate % cellSize;
