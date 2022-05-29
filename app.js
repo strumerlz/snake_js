@@ -29,11 +29,11 @@ let cellDraw = {
 }
 let cellSnake = Object.create(cellDraw);
 let cellFood = Object.create(cellDraw);
-cellFood.strokeStyle = 'maroon';
-cellFood.fillStyle = 'saddleBrown';
+cellFood.strokeStyle = '#2f2f4f';
+cellFood.fillStyle = '#8f8fbc';
 let cellCollision = Object.create(cellDraw);
-cellCollision.strokeStyle = 'maroon';
-cellCollision.fillStyle = 'brown';
+cellCollision.strokeStyle = '#4f2f2f';
+cellCollision.fillStyle = '#bc8f8f';
 
 
 let snake = {
@@ -95,6 +95,17 @@ let snake = {
     let that = this;
     document.addEventListener('keydown', (event) => that.changeDirection(event));
   },
+  checkColisions() {
+    for (let i = 0; i < this.tail.length; i++) {
+      if (this.head[0] === this.tail[i][0] && this.head[1] === this.tail[i][1]) {
+        [cellCollision.x, cellCollision.y] = this.head;
+        console.log([cellCollision.x, cellCollision.y]);
+        cellCollision.render();
+        game.over();
+        return;
+      }
+    }
+  },
   render() {
     for (let partLocation of [this.head, ...this.tail]) {
       [this.cell.x, this.cell.y] = partLocation;
@@ -102,6 +113,7 @@ let snake = {
     };
   },
 }
+
 
 const game = {
   speed: 8,
@@ -119,7 +131,7 @@ const game = {
         this.checkBoundaries();
         clearCanvas();
         snake.render();
-        this.checkColisions();
+        snake.checkColisions();
         this.play();
       }, timeOut);
     };
@@ -172,17 +184,7 @@ const game = {
       }
     }
   },
-  checkColisions() {
-    for (let i = 0; i < snake.tail.length; i++) {
-      if (snake.head[0] === snake.tail[i][0] && snake.head[1] === snake.tail[i][1]) {
-        [cellCollision.x, cellCollision.y] = snake.head;
-        console.log([cellCollision.x, cellCollision.y]);
-        cellCollision.render();
-        game.over();
-        return;
-      }
-    }
-  },
+  
   over() {
     clearTimeout(this.timerId);
     this.busted = true;
