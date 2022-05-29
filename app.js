@@ -29,8 +29,8 @@ let board = {
     }
   },
   genXY() {
-    let x = Math.random() * this.rightBorder- this.cellSize;
-    let y = Math.random() * this.bottomBorder- this.cellSize;
+    let x = Math.random() * this.rightBorder - this.cellSize;
+    let y = Math.random() * this.bottomBorder - this.cellSize;
     return [x, y];
   },
 }
@@ -47,11 +47,11 @@ let cellDraw = {
   stroke() {
     board.ctx.strokeStyle = this.strokeStyle;
     board.ctx.lineWidth = this.lineWidth;
-    board.ctx.strokeRect(this.x+this.lineWidth/2, this.y+this.lineWidth/2, this.strokeSize, this.strokeSize);
+    board.ctx.strokeRect(this.x + this.lineWidth / 2, this.y + this.lineWidth / 2, this.strokeSize, this.strokeSize);
   },
   fill() {
     board.ctx.fillStyle = this.fillStyle;
-    board.ctx.fillRect(this.x+this.lineWidth/2, this.y+this.lineWidth/2, this.strokeSize, this.strokeSize);
+    board.ctx.fillRect(this.x + this.lineWidth / 2, this.y + this.lineWidth / 2, this.strokeSize, this.strokeSize);
   },
   render() {
     this.fill();
@@ -169,6 +169,7 @@ const food = new function() {
 
 const game = {
   speed: 8,
+  score: 1,
   init() {
     snake.init();
     this.genFood();
@@ -259,5 +260,20 @@ const game = {
     console.log('GAME OVER')
   }
 }
+
+let infoBar = {
+  speed: document.getElementById('speed'),
+  state: document.getElementById('state'),
+  score: document.getElementById('score'),
+  speedDisplay() {
+    this.speed.textContent = `Speed: ${game.speed}`;
+  },
+  pauseDisplay() {
+    this.state.textContent = `Pause`;
+  },
+  scoreDisplay() {
+    this.state.textContent = `Score: ${game.score}`;
+  },
+};
 
 game.init();
