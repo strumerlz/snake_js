@@ -162,44 +162,55 @@ const food = new function() {
     }
   });
   this.genFoodLocation = function(){
+    
     let location = board.genXY();
     let gridSnappedLoc = location.map((e) => board.snapToGrid(e, board.cellSize));
     [this.cell.x, this.cell.y] = gridSnappedLoc;
     //сheck snake body collision
   }
   this.render = () => this.cell.render();
-  this.init = function(){
-    this.genFoodLocation();
-    this.render();
-  }
 }();
 
 const game = {
   speed: 8,
   init() {
     snake.init();
-    food.init();
+    this.genFood();
     snake.directionListener();
     this.pauseListener();
   },
-  isFoodDigested(){
+  ifFoodDigested(){
     if (snake.tail[snake.tail.length-1][0] === food.cell.x && snake.tail[snake.tail.length-1][1] === food.cell.y) {
       snake.grow();
     }
   },
-  isFoodEaten(){
+  ifFoodEaten(){
     if (snake.head[0] === food.cell.x && snake.head[1] === food.cell.y) {
-      food.genFoodLocation();
+      this.genFood();
     }
+  },
+  isFoodCollide() {
+    let body = [snake.head, ...snake.tail];
+    for (let i = 0; i < body.length; i++) {
+      if (food.cell.x === body[i][0] && food.cell.y === body[i][1]) {
+        return true;        
+      };
+    };
+  },
+  genFood(){
+    do {
+      food.genFoodLocation();
+    } while( this.isFoodCollide() );
+    food.render();
   },
   play() {
     if (this.busted === false || this.busted === undefined) {
       let timeOut = 1000 / this.speed;
       this.timerId = setTimeout(() => {
-        this.isFoodDigested();
+        this.ifFoodDigested();
         snake.move();
         this.checkBoundaries();
-        this.isFoodEaten();
+        this.ifFoodEaten();
         board.clearCanvas();
         food.render();
         snake.render();
