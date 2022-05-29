@@ -36,7 +36,6 @@ let board = {
 }
 
 let cellDraw = {
-  context: board.ctx,
   x: 0,
   y: 0,
   lineWidth: 4,
@@ -151,18 +150,23 @@ let snake = {
 const food = new function() {
   this.cell = Object.create(cellDraw, {
     'strokeStyle': {
-      value: '4f2f2f',
+      value: '#4f2f4f ',
       writable: true
     },
     'fillStyle': {
-      value: 'bc8f8f',
+      value: '#BD8E86',
       writable: true
     }
-  });
-  this.gen = () => {
-    let arr = [];
-    arr.push(1);
-    arr.push(2);
+  });f
+  this.genFoodLocation = function(){
+    let location = board.genXY();
+    let gridSnappedLoc = location.map((e) => board.snapToGrid(e, board.cellSize));
+    [this.cell.x, this.cell.y] = gridSnappedLoc;
+  }
+  this.render = () => this.cell.render();
+  this.init = function(){
+    this.genFoodLocation();
+    this.render();
   }
 }();
 
@@ -238,11 +242,6 @@ const game = {
     console.log('GAME OVER')
   }
 }
-
-
-
-
-
 
 game.init();
 
