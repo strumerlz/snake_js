@@ -29,12 +29,12 @@ canvas {
 }
 
 .status-bar__item {
-  width: 150px;
   display: flex;
   flex-direction: row;
 }
 .status-bar__item:first-child {
   justify-content: start;
+  width: 150px;
 }
 
 .status-bar__item:nth-child(2) {
@@ -43,6 +43,7 @@ canvas {
 
 .status-bar__item:last-child {
   justify-content: end;
+  width: 150px;
 }
 
 .status-bar__value {

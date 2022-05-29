@@ -221,10 +221,12 @@ const game = {
       if (this.paused === true || this.paused === undefined) {
         this.paused = false;
         this.play();
+        infoBar.clearState();
         console.log('Play');
       } else {
         this.paused = true;
         this.pause();
+        infoBar.pauseDisplay();
         console.log('Pause');
       };
     };
@@ -259,6 +261,7 @@ const game = {
   over() {
     clearTimeout(this.timerId);
     this.busted = true;
+    infoBar.gameOverDisplay();
     console.log('GAME OVER')
   }
 }
@@ -278,6 +281,9 @@ let infoBar = {
   },
   scoreDisplay() {
     this.score.textContent = `${game.score}`;
+  },
+  gameOverDisplay(){
+    this.state.textContent = `Game Over`;
   },
 };
 
