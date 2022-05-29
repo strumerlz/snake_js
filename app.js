@@ -29,8 +29,8 @@ let board = {
     }
   },
   genXY() {
-    let x = Math.random() * this.rightBorder;
-    let y = Math.random() * this.bottomBorder;
+    let x = Math.random() * this.rightBorder- this.cellSize;
+    let y = Math.random() * this.bottomBorder- this.cellSize;
     return [x, y];
   },
 }
@@ -44,15 +44,14 @@ let cellDraw = {
   },
   strokeStyle: 'DarkSlateGray',
   fillStyle: 'DarkSeaGreen',
-
   stroke() {
     board.ctx.strokeStyle = this.strokeStyle;
     board.ctx.lineWidth = this.lineWidth;
-    board.ctx.strokeRect(this.x, this.y, this.strokeSize, this.strokeSize);
+    board.ctx.strokeRect(this.x+this.lineWidth/2, this.y+this.lineWidth/2, this.strokeSize, this.strokeSize);
   },
   fill() {
     board.ctx.fillStyle = this.fillStyle;
-    board.ctx.fillRect(this.x, this.y, this.strokeSize, this.strokeSize);
+    board.ctx.fillRect(this.x+this.lineWidth/2, this.y+this.lineWidth/2, this.strokeSize, this.strokeSize);
   },
   render() {
     this.fill();
@@ -68,10 +67,9 @@ let cellCollision = Object.create(cellDraw);
 cellCollision.strokeStyle = '#4f2f2f';
 cellCollision.fillStyle = '#bc8f8f';
 
-
 let snake = {
   cell: cellSnake,
-  head: [320, 200],
+  head: [340, 200],
   tail: [],
   direction: {
     x: 1,
@@ -162,11 +160,9 @@ const food = new function() {
     }
   });
   this.genFoodLocation = function() {
-
     let location = board.genXY();
     let gridSnappedLoc = location.map((e) => board.snapToGrid(e, board.cellSize));
     [this.cell.x, this.cell.y] = gridSnappedLoc;
-    //сheck snake body collision
   }
   this.render = () => this.cell.render();
 }();
@@ -257,7 +253,6 @@ const game = {
       }
     }
   },
-
   over() {
     clearTimeout(this.timerId);
     this.busted = true;
@@ -266,10 +261,3 @@ const game = {
 }
 
 game.init();
-
-
-
-//console.log([snake.head, ...snake.tail]);
-//snake.move();
-//console.log([snake.head, ...snake.tail]);
-//snake.render(cellSnake);
