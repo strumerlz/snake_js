@@ -1,11 +1,29 @@
-body{
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Russo+One&display=swap');
+
+body {
   margin: 0;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+
 canvas {
+  display: block;
   outline: 4px solid DarkSlateGray;
   outline-offset: 2px
+}
+
+.status_bar {
+  color: DarkSlateGray;
+  font-family: 'Bungee', cursive;
+  font-family: 'Russo One', sans-serif;
+  font-size: 18px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  width: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
