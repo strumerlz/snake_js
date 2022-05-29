@@ -76,6 +76,8 @@ let snake = {
     y: 0
   },
   init() {
+    this.head = [340, 200];
+    this.tail = [];
     for (let i = 1; i < 5; i++) {
       let arr = [this.head[0] - board.cellSize * i, this.head[1]];
       this.tail.push(arr);
@@ -126,7 +128,7 @@ let snake = {
       };
     };
   },
-  directionListener() {
+  addDirectionListener() {
     let that = this;
     document.addEventListener('keydown', (event) => that.changeDirection(event));
   },
@@ -171,10 +173,17 @@ const game = {
   speed: 1,
   score: 0,
   init() {
+    this.busted = false;
+    board.clearCanvas();
+    infoBar.initStateDisplay();
+    infoBar.clearBottomBar();
+    this.speed = 1;
+    this.score = 0;
     snake.init();
     this.genFood();
-    snake.directionListener();
+    snake.addDirectionListener();
     this.pauseListener();
+    this.newGameListener();
   },
   ifFoodEaten() {
     if (snake.tail[0][0] === food.cell.x && snake.tail[0][1] === food.cell.y) {
@@ -222,7 +231,7 @@ const game = {
       if (this.paused === true || this.paused === undefined) {
         this.paused = false;
         this.play();
-        infoBar.clearState();
+        infoBar.clearStateBar();
         console.log('Play');
       } else {
         this.paused = true;
@@ -272,21 +281,32 @@ const game = {
     clearTimeout(this.timerId);
     this.busted = true;
     infoBar.gameOverDisplay();
+    infoBar.startNewGameDisplay()
     console.log('GAME OVER')
-  }
+  },
+  newGame(event) {
+    if (event.code === 'Enter' && this.busted === true)
+      this.init();
+   // this.play();
+  },
+  newGameListener() {
+    let that = this;
+    document.addEventListener('keydown', (event) => this.newGame(event));
+  },
 }
 
 let infoBar = {
   speed: document.getElementById('speed'),
   state: document.getElementById('state'),
   score: document.getElementById('score'),
+  bottomBar: document.getElementById('bottom-info-bar'),
   speedDisplay() {
     this.speed.textContent = `${game.speed}`;
   },
   pauseDisplay() {
     this.state.textContent = `Pause`;
   },
-  clearState() {
+  clearStateBar() {
     this.state.textContent = ` `;
   },
   scoreDisplay() {
@@ -294,6 +314,15 @@ let infoBar = {
   },
   gameOverDisplay() {
     this.state.textContent = `Game Over`;
+  },
+  startNewGameDisplay() {
+    this.bottomBar.textContent = `Press Enter to start new game`;
+  },
+  clearBottomBar() {
+    this.bottomBar.textContent = ``;
+  },
+  initStateDisplay(){
+    this.state.textContent = `Press space to start/pause`;
   },
 };
 
