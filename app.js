@@ -98,7 +98,7 @@ let snake = {
     this.tailStepCalc();
     this.headStepCalc();
   },
-  grow(){
+  grow() {
     this.tail.push([...[food.cell.x, food.cell.y]]);
   },
   changeDirection(event) {
@@ -161,8 +161,8 @@ const food = new function() {
       writable: true
     }
   });
-  this.genFoodLocation = function(){
-    
+  this.genFoodLocation = function() {
+
     let location = board.genXY();
     let gridSnappedLoc = location.map((e) => board.snapToGrid(e, board.cellSize));
     [this.cell.x, this.cell.y] = gridSnappedLoc;
@@ -179,13 +179,9 @@ const game = {
     snake.directionListener();
     this.pauseListener();
   },
-  ifFoodDigested(){
-    if (snake.tail[snake.tail.length-1][0] === food.cell.x && snake.tail[snake.tail.length-1][1] === food.cell.y) {
+  ifFoodEaten() {
+    if (snake.tail[0][0] === food.cell.x && snake.tail[0][1] === food.cell.y) {
       snake.grow();
-    }
-  },
-  ifFoodEaten(){
-    if (snake.head[0] === food.cell.x && snake.head[1] === food.cell.y) {
       this.genFood();
     }
   },
@@ -193,21 +189,20 @@ const game = {
     let body = [snake.head, ...snake.tail];
     for (let i = 0; i < body.length; i++) {
       if (food.cell.x === body[i][0] && food.cell.y === body[i][1]) {
-        return true;        
+        return true;
       };
     };
   },
-  genFood(){
+  genFood() {
     do {
       food.genFoodLocation();
-    } while( this.isFoodCollide() );
+    } while (this.isFoodCollide());
     food.render();
   },
   play() {
     if (this.busted === false || this.busted === undefined) {
       let timeOut = 1000 / this.speed;
       this.timerId = setTimeout(() => {
-        this.ifFoodDigested();
         snake.move();
         this.checkBoundaries();
         this.ifFoodEaten();
@@ -240,7 +235,7 @@ const game = {
     document.addEventListener('keydown', (event) => that.pausePlaySwitch(event));
   },
   checkBoundaries() {
-      if (snake.direction.x !== 0) {
+    if (snake.direction.x !== 0) {
       switch (snake.head[0]) {
         case board.leftBorder:
           snake.head[0] = board.rightBorder - board.cellSize;
