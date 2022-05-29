@@ -114,6 +114,23 @@ let snake = {
   },
 }
 
+const food = new function() {
+  this.cell = Object.create(cellDraw, {
+    'strokeStyle': {
+      value: '4f2f2f',
+      writable: true
+    },
+    'fillStyle': {
+      value: 'bc8f8f',
+      writable: true
+    }
+  });
+  this.gen = () => {
+    let arr = [];
+    arr.push(1);
+    arr.push(2);
+  }
+}();
 
 const game = {
   speed: 8,
@@ -123,13 +140,14 @@ const game = {
     snake.directionListener();
     this.pauseListener();
   },
+
   play() {
     if (this.busted === false || this.busted === undefined) {
       let timeOut = 1000 / this.speed;
       this.timerId = setTimeout(() => {
         snake.move();
         this.checkBoundaries();
-        clearCanvas();
+        board.clearCanvas();
         snake.render();
         snake.checkColisions();
         this.play();
@@ -184,7 +202,7 @@ const game = {
       }
     }
   },
-  
+
   over() {
     clearTimeout(this.timerId);
     this.busted = true;
@@ -192,9 +210,12 @@ const game = {
   }
 }
 
-function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+let board = {
+  clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 }
+
 
 game.init();
 
