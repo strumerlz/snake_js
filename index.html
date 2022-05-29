@@ -12,10 +12,16 @@
 </head>
 
 <body>
-  <div class="status_bar">
-    <div id="speed">Speed: 1</div>
-    <div id="state">Game Over</div>
-    <div id="score">Score: 0</div>
+  <div class="status-bar">
+    <div class="status-bar__item">
+        <div>Speed:&nbsp</div>
+        <div class="status-bar__value" id="speed">1</div>
+    </div>
+    <div class="status-bar__item" id="state">Game Over</div>
+    <div class="status-bar__item" >
+        <div>Score:&nbsp</div>
+        <div class="status-bar__value" id="score">0</div>
+    </div>
   </div>
   <canvas id="snake" width="600" height="400"></canvas>
 </body>

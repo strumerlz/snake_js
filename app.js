@@ -268,7 +268,7 @@ let infoBar = {
   state: document.getElementById('state'),
   score: document.getElementById('score'),
   speedDisplay() {
-    this.speed.textContent = `Speed: ${game.speed}`;
+    this.speed.textContent = `${game.speed}`;
   },
   pauseDisplay() {
     this.state.textContent = `Pause`;
@@ -277,7 +277,7 @@ let infoBar = {
     this.state.textContent = ` `;
   },
   scoreDisplay() {
-    this.score.textContent = `Score: ${game.score}`;
+    this.score.textContent = `${game.score}`;
   },
 };
 

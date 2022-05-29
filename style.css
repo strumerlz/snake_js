@@ -15,7 +15,7 @@ canvas {
   outline-offset: 2px
 }
 
-.status_bar {
+.status-bar {
   color: DarkSlateGray;
   font-family: 'Bungee', cursive;
   font-family: 'Russo One', sans-serif;
@@ -27,3 +27,26 @@ canvas {
   flex-direction: row;
   justify-content: space-between;
 }
+
+.status-bar__item {
+  width: 150px;
+  display: flex;
+  flex-direction: row;
+}
+.status-bar__item:first-child {
+  justify-content: start;
+}
+
+.status-bar__item:nth-child(2) {
+  justify-content: center;
+}
+
+.status-bar__item:last-child {
+  justify-content: end;
+}
+
+.status-bar__value {
+  width: 20px;
+  text-align: right;
+}
+
