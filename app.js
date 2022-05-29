@@ -211,9 +211,41 @@ const game = {
 }
 
 let board = {
+  canvas: document.getElementById('snake'),
+  ctx: document.getElementById('snake').getContext('2d'),
+  get cellSize() {
+    return this.canvas.height / 20;
+  },
+  get leftBorder() {
+    return 0 - cellSnake.cellSize;
+  },
+  get rightBorder() {
+    return this.canvas.width;
+  },
+  get topBorder() {
+    return 0 - cellSnake.cellSize;
+  },
+  get bottomBorder() {
+    return this.canvas.height;
+  },
+
   clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
+  },
+  snapToGrid(coordinate, cellSize) {
+    let remainder = coordinate % cellSize;
+    let halfStep = cellSize / 2;
+    if (remainder < halfStep) {
+      return coordinate - remainder;
+    } else {
+      return coordinate - remainder + cellSize;
+    }
+  },
+  genXY() {
+    let x = Math.random() * this.rightBorder;
+    let y = Math.random() * this.bottomBorder;
+    return [x, y];
+  },
 }
 
 
