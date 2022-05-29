@@ -60,9 +60,9 @@ let cellDraw = {
 };
 
 let cellSnake = Object.create(cellDraw);
-let cellFood = Object.create(cellDraw);
-cellFood.strokeStyle = '#2f2f4f';
-cellFood.fillStyle = '#8f8fbc';
+//let cellFood = Object.create(cellDraw);
+//cellFood.strokeStyle = '#2f2f4f';
+//cellFood.fillStyle = '#8F8FBC';
 let cellCollision = Object.create(cellDraw);
 cellCollision.strokeStyle = '#4f2f2f';
 cellCollision.fillStyle = '#bc8f8f';
@@ -151,11 +151,11 @@ let snake = {
 const food = new function() {
   this.cell = Object.create(cellDraw, {
     'strokeStyle': {
-      value: '#4f2f4f ',
+      value: '#2f2f4f',
       writable: true
     },
     'fillStyle': {
-      value: '#BD8E86',
+      value: '#8F8FBC',
       writable: true
     }
   });
@@ -168,7 +168,7 @@ const food = new function() {
 }();
 
 const game = {
-  speed: 8,
+  speed: 1,
   score: 0,
   init() {
     snake.init();
@@ -200,11 +200,12 @@ const game = {
   },
   play() {
     if (this.busted === false || this.busted === undefined) {
-      let timeOut = 1000 / this.speed;
+      let timeOut = 1000 / (5 + this.speed * 3);
       this.timerId = setTimeout(() => {
         snake.move();
         this.checkBoundaries();
         this.ifFoodEaten();
+        this.ifSpeedIncrease();
         board.clearCanvas();
         food.render();
         snake.render();
@@ -258,6 +259,15 @@ const game = {
       }
     }
   },
+  ifSpeedIncrease() {
+    let step = 2;
+    let remainder = this.score % step;
+    if (this.score !== 0 && remainder === 0 && this.prevScore !== this.score) {
+      this.prevScore = this.score;
+      this.speed++;
+      infoBar.speedDisplay();
+    };
+  },
   over() {
     clearTimeout(this.timerId);
     this.busted = true;
@@ -276,13 +286,13 @@ let infoBar = {
   pauseDisplay() {
     this.state.textContent = `Pause`;
   },
-  clearState(){
+  clearState() {
     this.state.textContent = ` `;
   },
   scoreDisplay() {
     this.score.textContent = `${game.score}`;
   },
-  gameOverDisplay(){
+  gameOverDisplay() {
     this.state.textContent = `Game Over`;
   },
 };
